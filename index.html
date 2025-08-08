@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email OTP Auth</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: 500;
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      flex: 1;
+      font-size: 14px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+    button:disabled {
+      background-color: #a0a0a0;
+      cursor: not-allowed;
+    }
+    #result {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Email OTP Authentication</h2>
+
+    <!-- Email + Send OTP -->
+    <div>
+      <label for="email">Email:</label>
+      <div class="row">
+        <input type="email" id="email" placeholder="Enter your email" required />
+        <button id="sendOtpBtn">Send OTP</button>
+      </div>
+    </div>
+
+    <!-- OTP + Verify -->
+    <div id="otpSection" class="hidden" style="margin-top: 20px;">
+      <label for="otp">Enter OTP:</label>
+      <div class="row">
+        <input type="text" id="otp" placeholder="Enter OTP" required />
+        <button id="verifyOtpBtn">Verify OTP</button>
+      </div>
+    </div>
+
+    <p id="result"></p>
+  </div>
+
+  <script>
+    const emailInput = document.getElementById('email');
+    const otpInput = document.getElementById('otp');
+    const sendOtpBtn = document.getElementById('sendOtpBtn');
+    const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+    const otpSection = document.getElementById('otpSection');
+    const result = document.getElementById('result');
+
+    const showMessage = (msg, type) => {
+      result.textContent = msg;
+      result.className = type; // 'success' or 'error'
+    };
+
+    sendOtpBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      if (!email) return alert("Please enter an email");
+
+      sendOtpBtn.disabled = true;
+      showMessage("Sending OTP...", "success");
+
+      try {
+        const res = await fetch('/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          emailInput.disabled = true;
+          otpSection.classList.remove('hidden');
+          showMessage(data.message, "success");
+        } else {
+          sendOtpBtn.disabled = false;
+          showMessage(data.message || "Failed to send OTP", "error");
+        }
+      } catch (err) {
+        sendOtpBtn.disabled = false;
+        showMessage("Error sending OTP", "error");
+      }
+    });
+
+    verifyOtpBtn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const otp = otpInput.value.trim();
+      if (!otp) return alert("Please enter OTP");
+
+      verifyOtpBtn.disabled = true;
+      showMessage("Verifying OTP...", "success");
+
+      try {
+        const res = await fetch('/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          otpInput.disabled = true;
+          showMessage(data.message, "success");
+        } else {
+          verifyOtpBtn.disabled = false;
+          showMessage(data.message || "Invalid OTP", "error");
+        }
+      } catch (err) {
+        verifyOtpBtn.disabled = false;
+        showMessage("Error verifying OTP", "error");
+      }
+    });
+  </script>
+</body>
+</html>
