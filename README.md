@@ -17,20 +17,20 @@ OTP/
 └── README.md # Project documentation
 
 ---
-
+```
 ## ⚙️ Features
-
+```
 - Send OTP via email
 - Verify OTP entered by the user
 - Environment variable support for secure credentials
 - Simple frontend for input
 
 ---
-
+```
 ## 📦 Installation
-
+```
 1. **Clone the repository** (or download the project folder)
-   ```
+   ``
    git clone <your-repo-url>
    cd OTP
 Install dependencies
@@ -53,8 +53,9 @@ Go to http://localhost:3000 in your browser.
 
 Enter your email
 The app will send an OTP to the provided email, which you can then enter to verify.
-
+```
 🛠 Technologies Used
+```
 Node.js
 
 Express.js
@@ -62,11 +63,10 @@ Express.js
 Nodemailer
 
 dotenv
-
+```
 📜 License
 This project is licensed under the MIT License.
-
----
+```
 
 If you want, I can also **add a "Message" along with the OTP** inside `server.js` so the email looks more professional instead of just a raw number. That way the OTP email says something like:  
 
@@ -75,5 +75,6 @@ If you want, I can also **add a "Message" along with the OTP** inside `server.js
 Do you want me to add that now?
 
 
+```
 
 
