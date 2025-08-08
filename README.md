@@ -6,7 +6,7 @@ This project uses **Express**, **Nodemailer**, and **dotenv** to send OTPs to us
 ---
 
 ## 📂 Project Structure
-
+```
 OTP/
 ├── node_modules/ # Dependencies
 ├── public/
@@ -73,6 +73,7 @@ If you want, I can also **add a "Message" along with the OTP** inside `server.js
 > *"Your OTP for verification is: 123456. It is valid for 5 minutes."*  
 
 Do you want me to add that now?
+
 
 
 
