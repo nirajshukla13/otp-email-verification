@@ -31,7 +31,7 @@ OTP/
 ```
 1. **Clone the repository** (or download the project folder)
    ``
-   git clone <your-repo-url>
+   git clone https://github.com/nirajshukla13/Otp-Email-Verification.git
    cd OTP
 Install dependencies
 
@@ -76,5 +76,6 @@ Do you want me to add that now?
 
 
 ```
+
 
 
